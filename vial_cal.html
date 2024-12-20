@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vial Usage and Cost Calculator</title>
+</head>
+<body>
+    <h2>Vial Usage and Cost Calculator for Vectibix and Erbitux</h2>
+    
+    <label for="weight">Weight (kg):</label>
+    <input type="number" id="weight" required><br>
+
+    <label for="height">Height (cm):</label>
+    <input type="number" id="height" required><br>
+
+    <label for="vectibixCost">Cost per 100 mg Vectibix vial ($):</label>
+    <input type="number" id="vectibixCost" required><br>
+
+    <label for="erbituxCost">Cost per 100 mg Erbitux vial ($):</label>
+    <input type="number" id="erbituxCost" required><br>
+
+    <button onclick="calculateVialsAndCost()">Calculate Vials and Cost per Month</button>
+
+    <h3>Results:</h3>
+    <p id="vectibixResult"></p>
+    <p id="erbituxResult"></p>
+
+    <script>
+        function calculateVialsAndCost() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const vectibixCost = parseFloat(document.getElementById('vectibixCost').value);
+            const erbituxCost = parseFloat(document.getElementById('erbituxCost').value);
+
+            if (!weight || !height || !vectibixCost || !erbituxCost) {
+                alert("Please enter valid weight, height, and vial costs.");
+                return;
+            }
+
+            // Vectibix Calculation
+            const vectibixDosePerAdministration = weight * 6;
+            const vectibixVialsPerDose = Math.ceil(vectibixDosePerAdministration / 100);
+            const vectibixVialsPerMonth = vectibixVialsPerDose * 2;
+            const vectibixMonthlyCost = vectibixVialsPerMonth * vectibixCost;
+            document.getElementById('vectibixResult').innerText = `Vectibix: ${vectibixVialsPerMonth} vials per month, Monthly Cost: $${vectibixMonthlyCost.toFixed(2)}`;
+
+            // Erbitux Calculation
+            const BSA = 0.007184 * Math.pow(weight, 0.425) * Math.pow(height, 0.725);
+            const erbituxDosePerAdministration = BSA * 500;
+            const erbituxVialsPerDose = Math.ceil(erbituxDosePerAdministration / 100);
+            const erbituxVialsPerMonth = erbituxVialsPerDose * 2;
+            const erbituxMonthlyCost = erbituxVialsPerMonth * erbituxCost;
+            document.getElementById('erbituxResult').innerText = `Erbitux: ${erbituxVialsPerMonth} vials per month, Monthly Cost: $${erbituxMonthlyCost.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
